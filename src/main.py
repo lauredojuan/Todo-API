@@ -44,41 +44,44 @@ def get_todos(username):
     tasks = Task.get_task_by_username(username)
     return jsonify({
         "message": f"These are the tasks available for user {username}",
-        "task":tasks
+        "todo":tasks
     }), 200
 
 
 @app.route('/todos/<username>', methods=['POST'])
 def create_todos(username):
     body = request.get_json()
-    user1 = Task(username=username, label=body["label"], done=body["done"])
-    db.session.add(user1)
-    db.session.commit()
+    task = Task( body["label"], body["done"], username)
+    task.save_to_db()
     tasks = Task.get_task_by_username(username)
     return jsonify({
-        "new_task": tasks,
-        "message": f"New user {username} was created",
+        "message": f"New task for user {username} was created",
+        "todo": tasks,
         }), 200
 
 @app.route('/todos/<username>/<int:id>', methods=['PUT'])
 def update_todos(username, id):
-    task = Task.query.get(id)
-    serialized_task = task.serialize()
-    done = serialized_task["done"]
-    serialized_task["done"] = not done
-    return jsonify(serialized_task), 200
-
-
-
+    task = Task.get_task_by_id(id)
+    body = request.get_json()
+    task.label = body["label"]
+    task.done = body["done"]
+    task.save_to_db()
+    tasks = Task.get_task_by_username(username)
+    return jsonify({
+        "message": f"New task for user {username} was created",
+        "todo": tasks,
+        }), 200
 
 @app.route('/todos/<username>/<int:id>', methods=['DELETE'])
 def delete_todos(username, id):
-    user1 = Task.query.get(id)
-    db.session.delete(user1)
-    db.session.commit()
+    task=Task.get_task_by_id(id)
+    if task is None:
+        raise APIException("Not found", 404)
+    task.delete_from_db()
+    tasks = Task.get_task_by_username(username)
     return jsonify({
-        "new_task": tasks,
-        "message": f"New user {username} was created",
+        "message": "Task successfully deleted",
+        "todo": tasks,
         }), 200
 
 

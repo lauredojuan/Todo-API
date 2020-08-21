@@ -9,9 +9,9 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __init__(self, _id, email, password, is_active):
-        self.id=_id,
-        self.email=email,
-        self.password=password,
+        self.id=_id
+        self.email=email
+        self.password=password
         self.is_active=is_active
 
     @classmethod
@@ -42,8 +42,8 @@ class Task(db.Model):
         return '<Task %r>' % self.label
 
     def __init__(self, label, done, username): ## constructor
-        self.label=label,
-        self.done=done,
+        self.label=label
+        self.done=done
         self.username=username
 
     def serialize(self):
@@ -67,10 +67,10 @@ class Task(db.Model):
         # serialized_tasks = .serialize()
         return task_results
 
-    def save_to_data(self):
+    def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_database(self):
+    def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
