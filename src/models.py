@@ -41,11 +41,11 @@ class Task(db.Model):
     def __repr__(self):
         return '<Task %r>' % self.label
 
-    def __init__(self, _id, label, done, username):
-        self.id=_id,
-        self.label=label,
-        self.done=done,
-        self.username=username
+    # def __init__(self, _id, label, done, username):
+    #     self.id=_id,
+    #     self.label=label,
+    #     self.done=done,
+    #     self.username=username
 
     def serialize(self):
         return {
@@ -68,9 +68,9 @@ class Task(db.Model):
         serialized_tasks = list(map(lambda x: x.serialize(), task_results))
         return serialized_tasks
 
-    def save_to_data(self):
-        db.session.add(self)
-        db.session.commit()
+    # def save_to_data(self):
+    #     db.session.add(self)
+    #     db.session.commit()
 
     def delete_from_database(self):
         db.session.delete(self)

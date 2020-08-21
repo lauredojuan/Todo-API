@@ -42,20 +42,36 @@ def handle_hello():
 @app.route('/todos/<username>', methods=['GET'])
 def get_todos(username):
     tasks = Task.get_task_by_username(username)
-    # return results, jsonify() on results, status
     return jsonify({
-        "message":f"These are the tasks available for user {username}",
+        "message": "These are the tasks available for user {username}",
         "task":tasks
     }), 200
 
 
 @app.route('/todos/<username>', methods=['POST'])
 def create_todos(username):
-    pass
+    body = request.get_json()
+    user1 = Task(username=username, label=body["label"], done=body["done"])
+    db.session.add(user1)
+    db.session.commit()
+    return jsonify({
+        "message": "New user {username} was created",
+        }), 200
 
 @app.route('/todos/<username>', methods=['PUT'])
 def update_todos(username):
-    pass
+    user1 = Person.query.get(person_id)
+if user1 is None:
+    raise APIException('User not found', status_code=404)
+
+if "username" in body:
+    user1.username = body["username"]
+if "email" in body:
+    user1.email = body["email"]
+db.session.commit()
+return jsonify({
+        "message": "New user {username} was created",
+        }), 200    
 
 @app.route('/todos/<username>', methods=['DELETE'])
 def delete_todos(username):
