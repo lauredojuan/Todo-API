@@ -43,7 +43,7 @@ def handle_hello():
 def get_todos(username):
     tasks = Task.get_task_by_username(username)
     return jsonify({
-        "message": f"These are the tasks available for user {username}",
+        "message": "These are the tasks available for user {username}",
         "task":tasks
     }), 200
 
@@ -57,7 +57,7 @@ def create_todos(username):
     tasks = Task.get_task_by_username(username)
     return jsonify({
         "new_task": tasks,
-        "message": f"New user {username} was created",
+        "message": "New user {username} was created",
         }), 200
 
 @app.route('/todos/<username>/<int:id>', methods=['PUT'])
@@ -78,7 +78,7 @@ def delete_todos(username, id):
     db.session.commit()
     return jsonify({
         "new_task": tasks,
-        "message": f"New user {username} was created",
+        "message": "New user {username} was created",
         }), 200
 
 
